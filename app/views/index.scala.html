@@ -1,9 +1,13 @@
 @(user: String, projects: List[Project])
 
-@main("blueprin.tr") {
+@layout(user) {
+
+  <h1>Projects</h1>
 
   @for(project <- projects) {
-    <li>@project.name</li>
+    <li><a href="@controllers.routes.BluePrintr.project(project.id)">@project.name</a></li>
   }
+  
+  <a href="@controllers.routes.BluePrintr.createProjectForm">New project</a>
 
 }

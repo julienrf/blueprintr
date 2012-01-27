@@ -22,5 +22,5 @@ object Authentication extends Controller {
     Redirect(routes.BluePrintr.index).withNewSession
   }
   
-  val authForm = Form(mapping("username" -> text)(identity)(Some(_)))
+  val authForm = Form(mapping("username" -> nonEmptyText)(identity)(Some(_)))
 }

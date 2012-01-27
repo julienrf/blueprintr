@@ -1,0 +1,10 @@
+@(user: String, form: Form[String])
+
+@layout(user) {
+
+  @helper.form(controllers.routes.BluePrintr.createProject) {
+    @helper.inputText(form("name"))
+    <button>Save</button>
+  }
+
+}
