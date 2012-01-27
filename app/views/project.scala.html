@@ -1,7 +1,19 @@
-@(user: String, project: Project)
+@(user: String, project: Project with ProjectTasks with ProjectResources)
 
 @layout(user) {
 
   @project.name
+  
+  <div class="resources">
+    @for(resource <- project.resources) {
+      <div>@resource.name</div>
+    }
+  </div>
+
+  <div class="tasks">
+    @for(task <- project.tasks) {
+      <div>@task.name</div>
+    }
+  </div>
 
 }

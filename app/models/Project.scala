@@ -1,6 +1,14 @@
 package models
 
-case class Project(id: Long, name: String)
+class Project(val id: Long, val name: String)
+
+trait ProjectTasks {
+  def tasks: List[Task]
+}
+
+trait ProjectResources {
+  def resources: List[Resource]
+}
 
 object Project {
   import org.scalaquery.session.Session
@@ -24,11 +32,20 @@ object Project {
   }
 
   def findAll: List[Project] = db withSession { implicit s: Session =>
-    (for (project <- projects) yield (project.*)).list map (t => Project(t._1, t._2))
+    (for (project <- projects) yield (project.*)).list map (t => new Project(t._1, t._2))
   }
 
   def findById(id: Long): Option[Project] = db withSession { implicit s: Session =>
-    (for (project <- projects if project.id === id) yield (project.*)).firstOption map (t => Project(t._1, t._2))
+    (for (project <- projects if project.id === id) yield (project.*)).firstOption map (t => new Project(t._1, t._2))
+  }
+  
+  def findWithTasksAndResources(id: Long): Option[Project with ProjectTasks with ProjectResources] = db withSession { implicit s: Session =>
+    findById(id) map { project =>
+      new Project(project.id, project.name) with ProjectTasks with ProjectResources {
+        override val tasks = (for (task <- Task.tasks if task.projectId === project.id) yield (task.*)).list map (t => new Task(t._1, t._2, t._3, t._4))
+        override val resources = (for (resource <- Resource.resources if resource.projectId === project.id) yield (resource.*)).list map (r => new Resource(r._1, r._2, r._3, new java.awt.Color(r._4), r._5))
+      }
+    }
   }
 
   def update(id: Long, project: Project): Project = db withSession { implicit s: Session =>
@@ -49,12 +66,12 @@ object Project {
 
   implicit val jsonFormat: Format[Project] = new Format[Project] {
     
-    override def writes(task: Project): JsValue = JsObject(List(
-      "id" -> JsNumber(task.id),
-      "name" -> JsString(task.name)
+    override def writes(project: Project): JsValue = JsObject(List(
+      "id" -> JsNumber(project.id),
+      "name" -> JsString(project.name)
     ))
 
-    override def reads(json: JsValue): Project = Project(
+    override def reads(json: JsValue): Project = new Project(
       (json \ "id").as[Long],
       (json \ "name").as[String]
     )

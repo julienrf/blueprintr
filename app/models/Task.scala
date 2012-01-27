@@ -19,7 +19,7 @@ object Task {
   import play.api.libs.json.{JsValue, JsObject, JsNumber, JsString}
 
   private lazy val db = Database.forDataSource(DB.getDataSource())
-  private lazy val Tasks = new Table[(Long, String, Time, Long)]("tasks") {
+  lazy val tasks = new Table[(Long, String, Time, Long)]("tasks") {
       def id = column[Long]("id", O PrimaryKey, O AutoInc)
       def name = column[String]("name", O NotNull)
       def startTime = column[Time]("start_time", O NotNull)
@@ -29,28 +29,28 @@ object Task {
   }
 
   def findAll: List[Task] = db withSession { implicit s: Session =>
-    (for (task <- Tasks) yield (task.*)).list map (t => Task(t._1, t._2, t._3, t._4))
+    (for (task <- tasks) yield (task.*)).list map (t => Task(t._1, t._2, t._3, t._4))
   }
 
   def findById(id: Long): Option[Task] = db withSession { implicit s: Session =>
-    (for (task <- Tasks if task.id === id) yield (task.*)).firstOption map (t => Task(t._1, t._2, t._3, t._4))
+    (for (task <- tasks if task.id === id) yield (task.*)).firstOption map (t => Task(t._1, t._2, t._3, t._4))
   }
 
   def update(id: Long, task: Task): Task = db withSession { implicit s: Session =>
-    (for (t <- Tasks if t.id === id) yield t.name ~ t.startTime).update((task.name, task.startTime))
+    (for (t <- tasks if t.id === id) yield t.name ~ t.startTime).update((task.name, task.startTime))
     findById(id).get
   }
 
   def insert(values: (String, Time, Long)): Task = db withSession { implicit s: Session =>
-    val id = Tasks.noID.insert(values)
+    val id = tasks.noID.insert(values)
     findById(Query(SimpleFunction.nullary[Long]("scope_identity")).first).get
   }
 
   def delete(id: Long) = db withSession { implicit s: Session =>
-    Tasks.where(_.id ===  id).delete
+    tasks.where(_.id ===  id).delete
   }
 
-  def evolution = Tasks.ddl
+  def evolution = tasks.ddl
 
   
   implicit val jsonFormat = new Writes[Task] {

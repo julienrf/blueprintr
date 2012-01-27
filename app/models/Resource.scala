@@ -17,7 +17,7 @@ object Resource {
   import play.api.libs.json.{JsValue, JsObject, JsNumber, JsString}
 
   private lazy val db = Database.forDataSource(DB.getDataSource())
-  private lazy val resources = new Table[(Long, String, Int, Int, Long)]("resources") {
+  lazy val resources = new Table[(Long, String, Int, Int, Long)]("resources") {
       def id = column[Long]("id", O PrimaryKey, O AutoInc)
       def name = column[String]("name", O NotNull)
       def size = column[Int]("size", O NotNull)
