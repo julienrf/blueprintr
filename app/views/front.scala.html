@@ -1,0 +1,31 @@
+@()
+
+@main("test"){
+
+<div id="left">
+    <a href="/" id:"logo">Blueprintr</a>
+    <nav>
+
+    </nav>
+</div>
+<div id="grid">
+    <div id="wrapper">
+        <div id="test">
+            @views.html.tags.project( "Premier", 2, Seq(2, 4, 6, 2, 1) )
+            @views.html.tags.project( "Second", 4, Seq(12, 3, 5) )
+            @views.html.tags.project( "Important", 1, Seq(1, 7, 11, 2) )
+            @views.html.tags.project( "Secret", 9, Seq(2, 4, 6, 2, 1) )
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+	document.addEventListener("mousewheel",function(e){
+		//e.preventDefault();
+        e.stopPropagation();
+		return false;
+	})
+</script>
+
+}
+

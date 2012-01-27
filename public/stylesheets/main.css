@@ -1,0 +1,108 @@
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {margin: 0; padding: 0; border: 0; outline: 0; font-weight: inherit; font-style: inherit; font-size: 100%; font-family: inherit;}
+
+table {border-collapse: collapse; border-spacing: 0;}
+caption, th, td {text-align: left; font-weight: normal;}
+form legend {display: none;}
+blockquote:before, blockquote:after, q:before, q:after {content: "";}
+blockquote, q {quotes: "" "";}
+ol, ul {list-style: none;}
+hr {display: none; visibility: hidden;}
+
+:focus {outline: 0;}
+
+
+html, body {
+    overflow: hidden;
+}
+
+body {
+    font: 13px "Helvetica Neue", sans-serif;
+    color: #222;
+}
+
+#left {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    bottom: 0;
+    background: #fff;
+    border-right: 1px solid #ccc;
+}
+#grid {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 250px;
+    overflow: hidden;
+    overflow-x: auto;
+}
+#wrapper {
+    height: 100%;
+    width: 10000px;
+    overflow-y: auto;
+}
+#test {
+    background: url(/assets/images/grid.png);
+}
+#test:after {
+    content: " ";
+    display: block;
+    clear: both;
+}
+#grid header {
+    height: 50px;
+    line-height: 50px;
+    background: #ccc;
+    width: 100%;
+    border-left: 1px solid #aaa;
+    padding: 0 10px;
+    position: absolute;
+    top: 0;
+    z-index: 9999;
+    margin-left: -1px;
+    border-bottom: 1px solid #aaa;
+    color: #777;
+    text-shadow: 1px 1px 0 #ddd;
+}
+
+
+.project {
+    float: left;
+    border-left: 1px solid #ddd;
+}
+
+.task {
+    padding: 0 20px 47px;
+    overflow: hidden;
+    border: 1px solid #ddd;
+    margin: -1px ;
+}
+.task:hover {
+    background: rgba(0,0,0,.05);
+}
+
+.ressource {
+    float: left;
+    position: relative;
+}
+
+.affectation {
+    margin: 3px;
+    box-shadow: 3px 3px 0 #f88;
+    background: #faa;
+    width: 30px;
+    border-radius: 3px;
+}
+.affectation:hover {
+    box-shadow: 3px 3px 0 #f44;
+    background: #f77;
+    width: 30px;
+    border-radius: 3px;
+}
+
+
+
+
+

@@ -36,4 +36,8 @@ object BluePrintr extends Controller with Authenticated {
   }
   
   val projectForm = Form(mapping("name" -> nonEmptyText)(identity)(Some(_)))
+
+  def front = Action {
+      Ok(views.html.front())
+  }
 }
