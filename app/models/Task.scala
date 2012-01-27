@@ -1,7 +1,11 @@
 package models
 import java.sql.Time
 
-case class Task(id: Long, name: String, startTime: Time, projectId: Long)
+class Task(val id: Long, val name: String, val startTime: Time, val projectId: Long)
+
+trait TaskSteps {
+  def steps: List[Step with StepResources]
+}
 
 // DAO layer
 object Task {
@@ -29,13 +33,21 @@ object Task {
   }
 
   def findAll: List[Task] = db withSession { implicit s: Session =>
-    (for (task <- tasks) yield (task.*)).list map (t => Task(t._1, t._2, t._3, t._4))
+    (for (task <- tasks) yield (task.*)).list map (t => new Task(t._1, t._2, t._3, t._4))
   }
 
   def findById(id: Long): Option[Task] = db withSession { implicit s: Session =>
-    (for (task <- tasks if task.id === id) yield (task.*)).firstOption map (t => Task(t._1, t._2, t._3, t._4))
+    (for (task <- tasks if task.id === id) yield (task.*)).firstOption map (t => new Task(t._1, t._2, t._3, t._4))
   }
-
+  
+  def findWithSteps(id: Long): Option[Task with TaskSteps] = db withSession { implicit s: Session =>
+    findById(id) map { task =>
+      new Task(task.id, task.name, task.startTime, task.projectId) with TaskSteps {
+        override val steps = (for (step <- Step.steps if step.taskId === task.id) yield (step.id)).list map (id => Step.findWithResources(id).get)
+      }
+    }
+  }
+  
   def update(id: Long, task: Task): Task = db withSession { implicit s: Session =>
     (for (t <- tasks if t.id === id) yield t.name ~ t.startTime).update((task.name, task.startTime))
     findById(id).get

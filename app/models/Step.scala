@@ -1,6 +1,10 @@
 package models
 
-case class Step(id: Long, name: String, duration: Int, taskId: Long)
+class Step(val id: Long, val name: String, val duration: Int, val taskId: Long)
+
+trait StepResources {
+  def resources: List[Resource]
+}
 
 object Step {
   import org.scalaquery.session.Session
@@ -16,7 +20,7 @@ object Step {
   import play.api.libs.json.{JsValue, JsObject, JsNumber, JsString}
 
   private lazy val db = Database.forDataSource(DB.getDataSource())
-  private lazy val steps = new Table[(Long, String, Int, Long)]("steps") {
+  lazy val steps = new Table[(Long, String, Int, Long)]("steps") {
       def id = column[Long]("id", O PrimaryKey, O AutoInc)
       def name = column[String]("name", O NotNull)
       def duration = column[Int]("duration", O NotNull)
@@ -26,11 +30,24 @@ object Step {
   }
 
   def findAll: List[Step] = db withSession { implicit s: Session =>
-    (for (row <- steps) yield (row.*)).list map (t => Step(t._1, t._2, t._3, t._4))
+    (for (row <- steps) yield (row.*)).list map (t => new Step(t._1, t._2, t._3, t._4))
   }
 
   def findById(id: Long): Option[Step] = db withSession { implicit s: Session =>
-    (for (row <- steps if row.id === id) yield (row.*)).firstOption map (t => Step(t._1, t._2, t._3, t._4))
+    (for (row <- steps if row.id === id) yield (row.*)).firstOption map (t => new Step(t._1, t._2, t._3, t._4))
+  }
+
+  def findWithResources(id: Long): Option[Step with StepResources] = db withSession { implicit s: Session =>
+    findById(id) map { step =>
+      new Step(step.id, step.name, step.duration, step.taskId) with StepResources {
+        override val resources = {
+          for {
+            stepResource <- StepResource.stepResources if stepResource.stepId === step.id
+            resource <- Resource.resources if resource.id === stepResource.resourceId
+          } yield resource.*
+        }.list map (resource => new Resource(resource._1, resource._2, resource._3, new java.awt.Color(resource._4), resource._5))
+      }
+    }
   }
 
   def update(id: Long, step: Step): Step = db withSession { implicit s: Session =>

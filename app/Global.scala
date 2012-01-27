@@ -37,6 +37,7 @@ object Global extends GlobalSettings {
         StepResource.insert((cuisson.id, poele.id))
         
         val omelette = Task.insert(("Omelette forestière", new Time(9 * 60 * 60 * 1000), zDay.id))
+        println("omelette inserted (%s)" format omelette.id)
         val beating = Step.insert(("Battre les œufs", 10 * 60, omelette.id))
         StepResource.insert((beating.id, jrf.id))
         val cooking = Step.insert(("Cuisson", 10 * 60, omelette.id))

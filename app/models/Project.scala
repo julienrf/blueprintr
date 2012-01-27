@@ -3,7 +3,7 @@ package models
 class Project(val id: Long, val name: String)
 
 trait ProjectTasks {
-  def tasks: List[Task]
+  def tasks: List[Task with TaskSteps]
 }
 
 trait ProjectResources {
@@ -42,7 +42,7 @@ object Project {
   def findWithTasksAndResources(id: Long): Option[Project with ProjectTasks with ProjectResources] = db withSession { implicit s: Session =>
     findById(id) map { project =>
       new Project(project.id, project.name) with ProjectTasks with ProjectResources {
-        override val tasks = (for (task <- Task.tasks if task.projectId === project.id) yield (task.*)).list map (t => new Task(t._1, t._2, t._3, t._4))
+        override val tasks = (for (task <- Task.tasks if task.projectId === project.id) yield task.id).list flatMap Task.findWithSteps
         override val resources = (for (resource <- Resource.resources if resource.projectId === project.id) yield (resource.*)).list map (r => new Resource(r._1, r._2, r._3, new java.awt.Color(r._4), r._5))
       }
     }
