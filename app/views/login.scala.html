@@ -1,0 +1,8 @@
+@(form: Form[String])
+
+@main("Login") {
+  @helper.form(routes.Authentication.authenticate) {
+    @helper.inputText(form("username"))
+    <button>Ok</button>
+  }
+}

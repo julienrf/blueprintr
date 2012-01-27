@@ -1,0 +1,9 @@
+@(user: String, projects: List[Project])
+
+@main("blueprin.tr") {
+
+  @for(project <- projects) {
+    <li>@project.name</li>
+  }
+
+}
