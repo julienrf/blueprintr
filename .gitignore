@@ -9,3 +9,4 @@ tmp
 .settings/
 db/
 bin/
+conf/evolutions/
