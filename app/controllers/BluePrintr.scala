@@ -15,7 +15,7 @@ object BluePrintr extends Controller with Authenticated {
   }
   
   def project(id: Long) = authenticated { user => request =>
-    Project.findWithTasksAndResources(id) match {
+    Project.findEager(id) match {
       case Some(project) => Ok(views.html.project(user, project))
       case None => NotFound
     }

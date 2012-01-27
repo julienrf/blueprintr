@@ -3,6 +3,8 @@ import java.sql.Time
 
 class Task(val id: Long, val name: String, val startTime: Time, val projectId: Long)
 
+class TaskEager(id: Long, name: String, startTime: Time, projectId: Long, val steps: Traversable[StepEager]) extends Task(id, name, startTime, projectId)
+
 trait TaskSteps {
   def steps: List[Step with StepResources]
 }

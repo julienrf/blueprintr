@@ -2,6 +2,8 @@ package models
 
 class Step(val id: Long, val name: String, val duration: Int, val taskId: Long)
 
+class StepEager(id: Long, name: String, duration: Int, taskId: Long, val resources: Traversable[Resource]) extends Step(id, name, duration, taskId)
+
 trait StepResources {
   def resources: List[Resource]
 }
