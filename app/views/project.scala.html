@@ -1,25 +1,24 @@
 @(user: String, project: Project with ProjectTasks with ProjectResources)
 
+@import views.html.tags
+
 @layout(user) {
 
-  @project.name
-  
-  <div class="resources">
+<div id="left">
+    <a href="@routes.BluePrintr.index" id="logo">Blueprintr</a>
+    @project.name
     @for(resource <- project.resources) {
       <div>@resource.name</div>
     }
-  </div>
-
-  <div class="tasks">
-    @for(task <- project.tasks) {
-      <div>@task.name</div>
-      @for(step <- task.steps) {
-        <div>@step.name</div>
-        @for(resource <- step.resources) {
-          <div>(@resource.name)</div>
-        }
-      }
-    }
-  </div>
+</div>
+<div id="grid">
+    <div id="wrapper">
+        <div id="test">
+          @for(task <- project.tasks) {
+            @tags.task(task)
+          }
+        </div>
+    </div>
+</div>
 
 }
