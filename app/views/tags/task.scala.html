@@ -1,11 +1,11 @@
-@(task: TaskEager)
+@(task: Task)
 
 <article class="project">
     <header>@task.name</header>
     <div class="task" style="margin-top:@{0 * 50}px">
     @for(step <- task.steps) {
       <div class="ressource">
-        <div class="affectation" style="margin-top: @{math.round( math.random*9 )*50}px;height: @{step.duration / 10}px;"></div>
+        <div class="affectation" style="margin-top: @{math.round( math.random*9 )*50}px;height: @{step.duration.getTime / 10}px;"></div>
       </div>
     }
     </div>

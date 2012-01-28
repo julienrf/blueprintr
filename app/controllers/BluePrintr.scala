@@ -4,20 +4,21 @@ import play.api._
 import play.api.mvc._
 import play.api.data.Form
 import play.api.data.Forms._
-
-import models.Project
+import models.{Project, Resource, Task}
+import com.avaje.ebean.Ebean
+import collection.JavaConverters._
 
 object BluePrintr extends Controller with Authenticated {
   
   def index = authenticated { user => request =>
-    val projects = Project.findAll
+    val projects = Project.find.all.asScala.toList
     Ok(views.html.index(user, projects))
   }
   
   def project(id: Long) = authenticated { user => request =>
-    Project.findEager(id) match {
-      case Some(project) => Ok(views.html.project(user, project))
-      case None => NotFound
+    Project.find.byId(id) match {
+      case null => NotFound
+      case project => Ok(views.html.project(user, project))
     }
   }
   
@@ -29,7 +30,7 @@ object BluePrintr extends Controller with Authenticated {
     projectForm.bindFromRequest.fold(
           errors => BadRequest(views.html.projectForm(user, errors)),
           name => {
-            Project.insert(name)
+            Ebean.save(new Project(name, List[Task]().asJava, List[Resource]().asJava))
             Redirect(routes.BluePrintr.index)
           }
         )

@@ -1,48 +1,36 @@
 import models._
 import play.api._
+import com.avaje.ebean.Ebean
 
 object Global extends GlobalSettings {
     
-    override def beforeStart(application: Application) {
-        
-        import play.api.db.evolutions.Evolutions._
-        
-        val ddl = Task.evolution ++ Project.evolution ++ Step.evolution ++ Resource.evolution ++ StepResource.evolution
-        
-        updateEvolutionScript(
-            ups = ddl.createStatements.mkString(";\n"),
-            downs = ddl.dropStatements.mkString(";\n")
-        )(application)
-        
-    }
-    
     override def onStart(application: Application) {
       
-      import java.sql.Time
-      import java.awt.Color
-      
-      if (Project.findAll.isEmpty) {
-        val zDay = Project.insert("Zen Day")
+      if (Project.find.all.isEmpty) {
         
-        val mda = Resource.insert(("Maxime", 1, Color.blue.getRGB, zDay.id))
-        val jrf = Resource.insert(("Julien", 1, Color.red.getRGB, zDay.id))
-        val poele = Resource.insert(("Poêle", 1, Color.yellow.getRGB, zDay.id))
+        import java.awt.Color
+        import play.libs.Time
+        import java.sql.{Time => SqlTime}
+        import collection.JavaConverters._
         
-        val crepes = Task.insert(("Faire des crêpes", new Time(8 * 60 * 60 * 1000), zDay.id))
-        val pate = Step.insert(("Pâte", 20 * 60, crepes.id))
-        StepResource.insert((pate.id, mda.id))
-        val repos = Step.insert(("Repos", 30 * 60, crepes.id))
-        val cuisson = Step.insert(("Cuisson", 25 * 60, crepes.id))
-        StepResource.insert((cuisson.id, mda.id))
-        StepResource.insert((cuisson.id, poele.id))
+        val mda = new Resource("Maxime", 1, Color.blue.getRGB)
+        val jrf = new Resource("Julien", 1, Color.red.getRGB)
+        val poele = new Resource("Poêle", 1, Color.yellow.getRGB)
         
-        val omelette = Task.insert(("Omelette forestière", new Time(9 * 60 * 60 * 1000), zDay.id))
-        println("omelette inserted (%s)" format omelette.id)
-        val beating = Step.insert(("Battre les œufs", 10 * 60, omelette.id))
-        StepResource.insert((beating.id, jrf.id))
-        val cooking = Step.insert(("Cuisson", 10 * 60, omelette.id))
-        StepResource.insert((cooking.id, jrf.id))
-        StepResource.insert((cooking.id, poele.id))
+        val crepes = new Task("Faire des crêpes", new SqlTime(Time.parseDuration("8h")), List(
+            new Step("Pâte", new SqlTime(Time.parseDuration("20min")), List(mda).asJava),
+            new Step("Repos", new SqlTime(Time.parseDuration("30min")), List[Resource]().asJava),
+            new Step("Cuisson", new SqlTime(Time.parseDuration("25min")), List(mda, poele).asJava)
+          ).asJava)
+        
+        val omelette = new Task("Omelette forestière", new SqlTime(Time.parseDuration("9h")), List(
+            new Step("Battre les œufs", new SqlTime(Time.parseDuration("10min")), List(jrf).asJava),
+            new Step("Cuisson", new SqlTime(Time.parseDuration("15min")), List(jrf, poele).asJava)
+          ).asJava)
+        
+        val zDay = new Project("Zen Day", List(crepes, omelette).asJava, List(mda, jrf, poele).asJava)
+        
+        Ebean.save(zDay)
       }
     }
 }
