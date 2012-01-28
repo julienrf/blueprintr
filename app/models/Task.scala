@@ -1,10 +1,14 @@
 package models
-import java.sql.Time
 import scala.collection.SortedSet
+import collection.mutable
 
-case class Task private (id: Int, name: String, startTime: Time, steps: List[Step]) {
+case class Task private (id: Int, var name: String, var startTime: Int, steps: mutable.Seq[Step]) {
   
-  lazy val resources: Seq[Resource] = {
+  def move(startTime: Int) {
+    this.startTime = startTime
+  }
+  
+  def resources: Seq[Resource] = {
     (for {
       step <- steps
       resource <- step.resources
@@ -14,6 +18,6 @@ case class Task private (id: Int, name: String, startTime: Time, steps: List[Ste
 }
 
 object Task extends Registry((e: Task) => e.id) {
-  def apply(name: String, startTime: Time, steps: List[Step]) =
-    save(new Task(freshId(), name, startTime, steps))
+  def apply(name: String, startTime: Int, steps: mutable.Seq[Step]) =
+    create(new Task(freshId(), name, startTime, steps))
 }

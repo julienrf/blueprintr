@@ -9,24 +9,24 @@ object Global extends GlobalSettings {
         
         import java.awt.Color
         import play.libs.Time
-        import java.sql.{Time => SqlTime}
+        import collection.mutable
         
         val mda = Resource("Maxime", 1, Color.blue.getRGB)
         val jrf = Resource("Julien", 1, Color.red.getRGB)
         val poele = Resource("Poêle", 1, Color.yellow.getRGB)
         
-        val crepes = Task("Faire des crêpes", new SqlTime(Time.parseDuration("30min")), List(
-            Step("Pâte", new SqlTime(Time.parseDuration("20min")), List(mda)),
-            Step("Repos", new SqlTime(Time.parseDuration("30min")), Nil),
-            Step("Cuisson", new SqlTime(Time.parseDuration("25min")), List(mda, poele))
+        val crepes = Task("Faire des crêpes", Time.parseDuration("30min"), mutable.Seq(
+            Step("Pâte", Time.parseDuration("20min"), mutable.Seq(mda)),
+            Step("Repos", Time.parseDuration("30min"), mutable.Seq.empty),
+            Step("Cuisson", Time.parseDuration("25min"), mutable.Seq(mda, poele))
           ))
         
-        val omelette = Task("Omelette forestière", new SqlTime(Time.parseDuration("1h")), List(
-            Step("Battre les œufs", new SqlTime(Time.parseDuration("10min")), List(jrf)),
-            Step("Cuisson", new SqlTime(Time.parseDuration("15min")), List(jrf, poele))
+        val omelette = Task("Omelette forestière", Time.parseDuration("1h"), mutable.Seq(
+            Step("Battre les œufs", Time.parseDuration("10min"), mutable.Seq(jrf)),
+            Step("Cuisson", Time.parseDuration("15min"), mutable.Seq(jrf, poele))
           ))
         
-        val zDay = Project("Zen Day", List(crepes, omelette), List(mda, jrf, poele))
+        val zDay = Project("Zen Day", mutable.Seq(crepes, omelette), mutable.Seq(mda, jrf, poele))
       }
     }
 }

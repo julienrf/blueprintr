@@ -1,11 +1,11 @@
 @(task: Task)
 
 <article class="task" style="width: @{task.resources.size * 50}px;">
-  <div class="steps" style="top: @{task.startTime.getTime / 10}px;">
+  <div class="steps" style="top: @{task.startTime / 10}px;">
     @for(step <- task.steps) {
-      <div class="step" style="height: @{step.duration.getTime / 10}px; width: 100%;">
+      <div class="step" style="height: @{step.duration / 10}px; width: 100%;">
           @for(resource <- step.resources) {
-            <div class="resource" style="left: @{task.resources.indexOf(resource) * 50}px; background-color: #@{resource.color.toHexString.substring(2)}; height: @{step.duration.getTime / 10}px;"></div>
+            <div class="resource" style="left: @{task.resources.indexOf(resource) * 50}px; background-color: #@{resource.color.toHexString.substring(2)}; height: @{step.duration / 10}px;"></div>
           }
         <div class="handle"></div>
       </div>

@@ -1,8 +1,10 @@
 package models
 
-case class Project private (id: Int, name: String, tasks: Seq[Task], resources: Seq[Resource])
+import collection.mutable
+
+case class Project private (id: Int, var name: String, tasks: mutable.Seq[Task], resources: mutable.Seq[Resource])
 
 object Project extends Registry((e: Project) => e.id) {
-  def apply(name: String, tasks: Seq[Task], resources: Seq[Resource]) =
-    save(new Project(freshId(), name, tasks, resources))
+  def apply(name: String, tasks: mutable.Seq[Task], resources: mutable.Seq[Resource]) =
+    create(new Project(freshId(), name, tasks, resources))
 }

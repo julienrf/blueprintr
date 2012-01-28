@@ -6,7 +6,7 @@ object json {
   
   val projectJson = new Writes[Project] {
     override def writes(project: Project): JsValue = JsObject(List(
-      "id" -> JsNumber(new java.math.BigDecimal(project.id)),
+      "id" -> JsNumber(project.id),
       "name" -> JsString(project.name)
     ))
   }
@@ -14,7 +14,7 @@ object json {
   
   val resourceJson = new Writes[Resource] {
     override def writes(resource: Resource): JsValue = JsObject(List(
-      "id" -> JsNumber(new java.math.BigDecimal(resource.id)),
+      "id" -> JsNumber(resource.id),
       "name" -> JsString(resource.name),
       "size" -> JsNumber(resource.amount),
       "color" -> JsNumber(resource.color)
@@ -24,18 +24,18 @@ object json {
   
   val taskJson = new Writes[Task] {
     override def writes(task: Task): JsValue = JsObject(List(
-      "id" -> JsNumber(new java.math.BigDecimal(task.id)),
+      "id" -> JsNumber(task.id),
       "name" -> JsString(task.name),
-      "startTime" -> JsNumber(task.startTime.getTime)
+      "startTime" -> JsNumber(task.startTime)
     ))
   }
   
   
   val stepJson = new Writes[Step] {
     override def writes(step: Step): JsValue = JsObject(List(
-      "id" -> JsNumber(new java.math.BigDecimal(step.id)),
+      "id" -> JsNumber(step.id),
       "name" -> JsString(step.name),
-      "duration" -> JsNumber(step.duration.getTime)
+      "duration" -> JsNumber(step.duration)
       // FIXME resources?
     ))
   }

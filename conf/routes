@@ -1,17 +1,14 @@
-# Routes
-# This file defines all application routes (Higher priority routes first)
-# ~~~~
-
-# Authentication
 GET     /login                      controllers.Authentication.login
 GET     /logout                     controllers.Authentication.logout
 POST    /auth                       controllers.Authentication.authenticate
 
-# Home page
 GET     /                           controllers.Projects.index
 POST    /project                    controllers.Projects.createProject
 GET     /project/new                controllers.Projects.createProjectForm
 GET     /project/:id                controllers.Projects.project(id: Int)
 
-# Map static resources from the /public folder to the /assets URL path
+
+PUT     /task/:id/move/:startTime   controllers.Tasks.move(id: Int, startTime: Int)
+
+
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

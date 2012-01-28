@@ -7,11 +7,10 @@ import java.sql.Time
 
 object Tasks extends Controller with Authenticated {
   
-  def move(id: Int, delta: Int) = authenticated { user => implicit request =>
+  def move(id: Int, startTime: Int) = authenticated { user => implicit request =>
     Task.find(id) match {
       case Some(task) => {
-        val updated = task.copy(startTime = new Time(task.startTime.getTime + delta))
-        Task.save(updated)
+        task.move(startTime)
         Ok
       }
       case None => BadRequest

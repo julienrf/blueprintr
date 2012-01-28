@@ -4,7 +4,7 @@ class Registry[A](extractId: A => Int) {
   
   def find(id: Int): Option[A] = entities.get(id)
   def findAll: Seq[A] = entities.values.toSeq
-  def save(a: A): A = {
+  def create(a: A): A = {
     entities = entities + (extractId(a) -> a)
     a
   }

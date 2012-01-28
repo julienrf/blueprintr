@@ -5,6 +5,7 @@ import play.api.mvc._
 import play.api.data.Form
 import play.api.data.Forms._
 import models.{Project, Resource, Task}
+import collection.mutable
 
 object Projects extends Controller with Authenticated {
   
@@ -28,7 +29,7 @@ object Projects extends Controller with Authenticated {
     projectForm.bindFromRequest.fold(
           errors => BadRequest(views.html.projects.edit(user, errors)),
           name => {
-            Project(name, Nil, Nil)
+            Project(name, mutable.Seq.empty, mutable.Seq.empty)
             Redirect(routes.Projects.index)
           }
         )
