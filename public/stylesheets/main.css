@@ -24,7 +24,7 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    width: 250px;
+    width: 20em;
     bottom: 0;
     background: #fff;
     border-right: 1px solid #ccc;
@@ -34,75 +34,73 @@ body {
     top: 0;
     right: 0;
     bottom: 0;
-    left: 250px;
+    left: 20em;
     overflow: hidden;
     overflow-x: auto;
 }
-#wrapper {
-    height: 100%;
-    width: 10000px;
-    overflow-y: auto;
-}
 #test {
     background: url(/assets/images/grid.png);
+    height: 100%;
+    width: 100%;
 }
 #test:after {
     content: " ";
     display: block;
-    clear: both;
 }
-#grid header {
-    height: 50px;
-    line-height: 50px;
+
+#tasks-header {
     background: #ccc;
-    width: 100%;
-    border-left: 1px solid #aaa;
-    padding: 0 10px;
-    position: absolute;
-    top: 0;
-    z-index: 9999;
-    margin-left: -1px;
+    height: 3em;
     border-bottom: 1px solid #aaa;
+}
+
+#tasks-header > header {
+    height: 100%;
+    line-height: 100%;
+    display: inline-block;
+    border-left: 1px solid #aaa;
+    text-align: center;
     color: #777;
     text-shadow: 1px 1px 0 #ddd;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
+#tasks-grid {
+    height: 100%;
+    overflow-y: auto;
+}
 
-.project {
-    float: left;
+#tasks-grid .task {
+    display: inline-block;
+    height: 100%;
+    position: relative;
     border-left: 1px solid #ddd;
 }
 
-.task {
-    padding: 0 20px 47px;
+#tasks-grid .steps {
+    position: absolute;
     overflow: hidden;
     border: 1px solid #ddd;
-    margin: -1px ;
+    width: 100%;
 }
-.task:hover {
+
+#tasks-grid .steps:hover {
     background: rgba(0,0,0,.05);
 }
 
-.ressource {
-    float: left;
+#tasks-grid .step {
     position: relative;
+    border: 1px solid black;
 }
 
-.affectation {
-    margin: 3px;
-    box-shadow: 3px 3px 0 #f88;
-    background: #faa;
-    width: 30px;
+#tasks-grid .resource {
+    position: absolute;
+    width: 50px;
+    box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.3);
     border-radius: 3px;
 }
-.affectation:hover {
+#tasks-grid .resource:hover {
     box-shadow: 3px 3px 0 #f44;
-    background: #f77;
-    width: 30px;
-    border-radius: 3px;
 }
-
-
-
-
 

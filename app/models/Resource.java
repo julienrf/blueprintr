@@ -11,7 +11,7 @@ import play.db.ebean.Model;
 public class Resource {
     
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long id;
+    public Integer id;
     
     public final String name;
     
@@ -25,5 +25,5 @@ public class Resource {
         this.color = color;
     }
 
-    public static Model.Finder<Long, Resource> find = new Model.Finder<Long, Resource>(Long.class, Resource.class);
+    public static Model.Finder<Integer, Resource> find = new Model.Finder<Integer, Resource>(Integer.class, Resource.class);
 }

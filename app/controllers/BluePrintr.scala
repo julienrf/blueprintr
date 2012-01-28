@@ -15,10 +15,10 @@ object BluePrintr extends Controller with Authenticated {
     Ok(views.html.index(user, projects))
   }
   
-  def project(id: Long) = authenticated { user => request =>
-    Project.find.byId(id) match {
-      case null => NotFound
-      case project => Ok(views.html.project(user, project))
+  def project(id: Int) = authenticated { user => request =>
+    Option(Project.find.byId(id)) match {
+      case Some(project) => Ok(views.html.project(user, project))
+      case None => NotFound
     }
   }
   

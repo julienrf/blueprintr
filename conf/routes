@@ -11,7 +11,7 @@ POST    /auth                       controllers.Authentication.authenticate
 GET     /                           controllers.BluePrintr.index
 POST    /project                    controllers.BluePrintr.createProject
 GET     /project/new                controllers.BluePrintr.createProjectForm
-GET     /project/:id                controllers.BluePrintr.project(id: Long)
+GET     /project/:id                controllers.BluePrintr.project(id: Int)
 
 # Front standalone
 GET     /@ui                        controllers.BluePrintr.front
