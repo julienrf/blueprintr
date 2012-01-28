@@ -29,7 +29,6 @@ public class Step {
         this.name = name;
         this.duration = duration;
         this.resources = resources;
-        System.out.println("Constructed with resources: " + resources);
     }
     
     public static Model.Finder<Integer, Step> find = new Model.Finder<Integer, Step>(Integer.class, Step.class);

@@ -8,13 +8,10 @@ GET     /logout                     controllers.Authentication.logout
 POST    /auth                       controllers.Authentication.authenticate
 
 # Home page
-GET     /                           controllers.BluePrintr.index
-POST    /project                    controllers.BluePrintr.createProject
-GET     /project/new                controllers.BluePrintr.createProjectForm
-GET     /project/:id                controllers.BluePrintr.project(id: Int)
-
-# Front standalone
-GET     /@ui                        controllers.BluePrintr.front
+GET     /                           controllers.Projects.index
+POST    /project                    controllers.Projects.createProject
+GET     /project/new                controllers.Projects.createProjectForm
+GET     /project/:id                controllers.Projects.project(id: Int)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

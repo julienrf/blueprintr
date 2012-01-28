@@ -1,0 +1,13 @@
+@(user: String, projects: List[Project])
+
+@layout(user) {
+
+  <h1>Projects</h1>
+
+  @for(project <- projects) {
+    <li><a href="@controllers.routes.Projects.project(project.id)">@project.name</a></li>
+  }
+  
+  <a href="@controllers.routes.Projects.createProjectForm">New project</a>
+
+}

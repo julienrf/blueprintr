@@ -1,11 +1,8 @@
 @(user: String, project: Project)
 
-@import views.html.tags
-
 @layout(user) {
 
 <div id="left">
-    <a href="@routes.BluePrintr.index" id="logo">Blueprintr</a>
     @project.name
     @for(resource <- project.resources) {
       <div style="background-color: #@{resource.color.toHexString.substring(2)};">@resource.name</div>
@@ -14,13 +11,13 @@
 <div id="grid">
   <div id="tasks-header">
     @for(task <- project.tasks) {
-      @tags.taskHeader(task)
+      @_taskHeader(task)
     }
   </div>
   <div id="tasks-grid">
     <div id="test">
       @for(task <- project.tasks) {
-        @tags.task(task)
+        @_task(task)
       }
     </div>
   </div>
