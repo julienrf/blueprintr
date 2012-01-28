@@ -5,18 +5,16 @@ import play.api.mvc._
 import play.api.data.Form
 import play.api.data.Forms._
 import models.{Project, Resource, Task}
-import com.avaje.ebean.Ebean
-import collection.JavaConverters._
 
 object Projects extends Controller with Authenticated {
   
   def index = authenticated { user => request =>
-    val projects = Project.find.all.asScala.toList
+    val projects = Project.findAll
     Ok(views.html.projects.list(user, projects))
   }
   
   def project(id: Int) = authenticated { user => request =>
-    Option(Project.find.byId(id)) match {
+    Project.find(id) match {
       case Some(project) => Ok(views.html.projects.show(user, project))
       case None => NotFound
     }
@@ -30,7 +28,7 @@ object Projects extends Controller with Authenticated {
     projectForm.bindFromRequest.fold(
           errors => BadRequest(views.html.projects.edit(user, errors)),
           name => {
-            Ebean.save(new Project(name, List[Task]().asJava, List[Resource]().asJava))
+            Project(name, Nil, Nil)
             Redirect(routes.Projects.index)
           }
         )
