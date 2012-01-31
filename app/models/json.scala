@@ -2,12 +2,13 @@ package models
 
 object json {
   
-  import play.api.libs.json.{Writes, JsObject, JsValue, JsNumber, JsString}
+  import play.api.libs.json._
   
   val projectJson = new Writes[Project] {
     override def writes(project: Project): JsValue = JsObject(List(
       "id" -> JsNumber(project.id),
-      "name" -> JsString(project.name)
+      "name" -> JsString(project.name),
+      "tasks" -> JsArray((project.tasks map taskJson.writes).toList)
     ))
   }
   

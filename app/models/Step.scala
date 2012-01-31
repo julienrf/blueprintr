@@ -1,6 +1,7 @@
 package models
 
 import collection.mutable
+import registry.Registry
 
 case class Step private (id: Int, var name: String, var duration: Int, resources: mutable.Seq[Resource])
 

@@ -1,6 +1,7 @@
 package models
 import scala.collection.SortedSet
 import collection.mutable
+import registry.Registry
 
 case class Task private (id: Int, var name: String, var startTime: Int, steps: mutable.Seq[Step]) {
   

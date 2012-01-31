@@ -1,7 +1,7 @@
 @(task: Task)
 
-<article class="task" style="width: @{task.resources.size * 50}px;">
-  <div class="steps" style="top: @{task.startTime / 10}px;">
+<article class="task" style="width: @{task.resources.size * 50}px;" data-id="@task.id" dropzone="move">
+  <div class="steps" style="top: @{task.startTime / 10}px;" draggable="true">
     @for(step <- task.steps) {
       <div class="step" style="height: @{step.duration / 10}px; width: 100%;">
           @for(resource <- step.resources) {
@@ -12,4 +12,3 @@
     }
   </div>
 </article>
-

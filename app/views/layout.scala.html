@@ -1,6 +1,16 @@
 @(user: String)(content: Html)
 
-@main("blueprin.tr") {
+@moreHead = {
+  <script type="text/javascript" src="@routes.JavaScript.routes"></script>
+  <script type="text/javascript" src="@routes.Assets.at("javascripts/selector3.js")"></script>
+  <script type="text/javascript" src="@routes.Assets.at("javascripts/class.js")"></script>
+  <script type="text/javascript" src="@routes.Assets.at("javascripts/missing.js")"></script>
+  <script type="text/javascript" src="@routes.Assets.at("javascripts/models.js")"></script>
+  <script type="text/javascript" src="@routes.Assets.at("javascripts/views.js")"></script>
+  <script type="text/javascript" src="@routes.Assets.at("javascripts/controls.js")"></script>
+}
+
+@main("blueprin.tr", moreHead) {
   @user
   <a href="@routes.Projects.index" id="logo">Blueprintr</a>
   @content

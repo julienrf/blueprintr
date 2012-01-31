@@ -1,0 +1,101 @@
+;(function () {
+  
+  var registry = (function () {
+    var entries = []; // No HashMap in JavaScript, yeah operations will be O(n)…
+    return {
+      put: function (k, v) {
+        entries = entries.filter(function (entry) {
+          return entry.k !== k;
+        });
+        entries.push({
+          k: k,
+          v: v
+        });
+      },
+      get: function (k) {
+        var results = entries.filter(function (entry) {
+          return entry.k === k
+        });
+        if (results.length > 0) {
+          return results[0].v;
+        }
+      }
+    }
+  })();
+  
+  var View = Class.extend({
+    init: function (root) {
+      View.register(root, this);
+    },
+    on: function (elt, event, handler) {
+      elt.addEventListener(event, (function (e) {
+        return !(handler.bind(this)(e, View.find(event.target)));
+      }).bind(this))
+    },
+    setDroppable: function () {
+      this.on(this.root, 'dragenter', function (e) { e.preventDefault(); return false });
+      this.on(this.root, 'dragover', function (e) { e.preventDefault(); return false });
+    }
+  });
+  View.register = registry.put
+  View.find = registry.get
+  View.dndPos = {
+      value: {},
+      update: function (e) {
+        var value = View.dndPos.value;
+        value.x = e.clientX;
+        value.y = e.clientY;
+        value.deltaX = e.clientX - value.origX;
+        value.deltaY = e.clientY - value.origY;
+      },
+      init: function (e) {
+        View.dndPos.value = {
+            id: (new Date).getTime(),
+            origX: e.clientX,
+            origY: e.clientY
+        };
+        View.dndPos.update(e);
+      }
+  };
+  
+  var TaskView = View.extend({
+    init: function (attrs) {
+      this._super(attrs.root);
+      merge(this, attrs)
+    },
+    bindEvents: function () {
+      this.setDroppable();
+      this.on(this.root, 'drop', function (e, v) {
+        View.dndPos.update(e);
+        this.ctl.dropped(e, View.dndPos.value, v);
+      });
+      this.on(this.root, 'dragstart', function (e, v) {
+        this.ctl.dragStarted(e, v);
+      });
+      this.on(this.root, 'click', function (e, v) {
+        this.ctl.clicked(e, v);
+      });
+    },
+    startDnD: function (e, effect) {
+      View.dndPos.init(e);
+      e.dataTransfer.effectAllowed = effect;
+      return View.dndPos.value
+    },
+    endDnD: function () {
+      
+    },
+    move: function (position) {
+      this.steps.style.setProperty('top', position + 'px');
+    }
+  });
+  TaskView.bind = function (root) {
+    return {
+      root: root,
+      steps: root.find('.steps')
+    }
+  };
+  
+  window.views = {
+      TaskView: TaskView
+  }
+})();

@@ -1,6 +1,7 @@
 package models
 
 import collection.mutable
+import registry.Registry
 
 case class Project private (id: Int, var name: String, tasks: mutable.Seq[Task], resources: mutable.Seq[Resource])
 

@@ -10,5 +10,6 @@ GET     /project/:id                controllers.Projects.project(id: Int)
 
 PUT     /task/:id/move/:startTime   controllers.Tasks.move(id: Int, startTime: Int)
 
+GET     /assets/javascripts/routes  controllers.JavaScript.routes
 
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

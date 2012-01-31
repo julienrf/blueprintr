@@ -1,4 +1,4 @@
-package models
+package registry
 
 class Registry[A](extractId: A => Int) {
   
@@ -14,4 +14,12 @@ class Registry[A](extractId: A => Int) {
   private val ids = new java.util.concurrent.atomic.AtomicInteger(0)
   private var entities = collection.immutable.SortedMap[Int, A]()
   
+}
+
+private object Registry
+
+trait Transaction {
+  def atomic[A](block : => A) = Registry synchronized {
+    block
+  }
 }

@@ -2,16 +2,21 @@ package controllers
 
 import play.api.mvc.{Controller, Results}
 import Results._
+import play.api.libs.json.Json
 import models.Task
-import java.sql.Time
+import registry.Transaction
 
-object Tasks extends Controller with Authenticated {
+object Tasks extends Controller with Authenticated with Transaction {
+  
+  implicit val taskJson = models.json.taskJson
   
   def move(id: Int, startTime: Int) = authenticated { user => implicit request =>
     Task.find(id) match {
       case Some(task) => {
-        task.move(startTime)
-        Ok
+        atomic {
+          task.move(startTime)
+        }
+        Ok(Json.toJson(task))
       }
       case None => BadRequest
     }
