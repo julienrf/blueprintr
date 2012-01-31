@@ -1,5 +1,15 @@
 ;(function () {
   
+  var Project = Class.extend({
+    
+    init: function (attrs) {
+      merge(this, attrs);
+    }
+    
+    
+    
+  });
+  
   var Task = Class.extend({
     
     init: function (attrs) {
@@ -12,6 +22,7 @@
   });
   
   window.models = {
-    Task: Task
+    Task: Task,
+    Project: Project
   }
 })();

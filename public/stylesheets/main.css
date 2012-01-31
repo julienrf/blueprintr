@@ -42,6 +42,7 @@ body {
     background: url(/assets/images/grid.png);
     height: 100%;
     width: 100%;
+    margin-left: 1em; /* Space for conflicts zone */
 }
 #test:after {
     content: " ";
@@ -52,6 +53,7 @@ body {
     background: #ccc;
     height: 3em;
     border-bottom: 1px solid #aaa;
+    margin-left: 1em; /* Space for conflicts zone */
 }
 
 #tasks-header > header {
@@ -92,6 +94,7 @@ body {
 #tasks-grid .step {
     position: relative;
     border: 1px solid black;
+    box-sizing: border-box;
 }
 
 #tasks-grid .resource {
@@ -104,3 +107,12 @@ body {
     box-shadow: 3px 3px 0 #f44;
 }
 
+#conflicts {
+    position: relative;
+    width: 1em;
+}
+
+#conflicts > div {
+    position: absolute;
+    width: 100%;
+}

@@ -16,6 +16,13 @@ case class Task private (id: Int, var name: String, var startTime: Int, steps: m
     } yield resource).distinct.sortBy(_.id)
   }
   
+  def stepsWithStartTime: Seq[(Step, Int)] = {
+    val startTimes = (steps.take(steps.size - 1).map { _.duration }).foldRight(List(startTime)) { (duration, startTimes) =>
+      (duration + startTimes.head) +: startTimes
+    }
+    steps zip startTimes.reverse
+  }
+  
 }
 
 object Task extends Registry((e: Task) => e.id) {

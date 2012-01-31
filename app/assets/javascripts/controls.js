@@ -32,7 +32,6 @@
     dropped: function (e, dnd, v) {
       if (dnd.id === this.dndId) {
         delete this.dndId;
-        this.view.endDnD();
         this.move(this.model.startTime + dnd.deltaY * 10);
       }
     },

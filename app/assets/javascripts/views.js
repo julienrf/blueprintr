@@ -36,7 +36,8 @@
     },
     
     setDroppable: function () {
-      this.on(this.root, 'dragenter', function (e) { e.preventDefault(); return false });
+      this.on(this.root, 'dragenter', function (e) { e.preventDefault() });
+      this.on(this.root, 'dragover', function (e) { e.preventDefault() });
     }
   });
   
@@ -74,10 +75,11 @@
       this.setDroppable();
       this.on(this.root, 'dragstart', function (e, v) {
         this.ctl.dragStarted(e, v);
+        return false
       });
       this.on(this.root, 'drop', function (e, v) {
         View.dnd.update(e);
-        this.ctl.dropped(e, View.dndPos.value, v);
+        this.ctl.dropped(e, View.dnd.value, v);
       });
       this.on(this.root, 'click', function (e, v) {
         this.ctl.clicked(e, v);
@@ -87,10 +89,7 @@
     startDnD: function (e, effect) {
       View.dnd.init(e);
       e.dataTransfer.effectAllowed = effect;
-      return View.dndPos.value
-    },
-    endDnD: function () {
-      
+      return View.dnd.value
     },
     
     move: function (position) {

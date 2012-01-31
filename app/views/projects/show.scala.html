@@ -14,6 +14,11 @@
       }
     </div>
     <div id="tasks-grid">
+      <div id="conflicts">
+        @for(conflict <- project.resourcesConflicts) {
+          <div style="top: @{conflict.from / 10}px; height: @{(conflict.to - conflict.from) / 10}px; background-color: #@{conflict.resource.color.toHexString.substring(2)};"></div>
+        }
+      </div>
       <div id="test">
         @for(task <- project.tasks) {
           @_task(task)
