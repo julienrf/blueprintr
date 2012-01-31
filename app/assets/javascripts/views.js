@@ -24,70 +24,80 @@
   })();
   
   var View = Class.extend({
+    
     init: function (root) {
       View.register(root, this);
     },
+    
     on: function (elt, event, handler) {
       elt.addEventListener(event, (function (e) {
         return !(handler.bind(this)(e, View.find(event.target)));
       }).bind(this))
     },
+    
     setDroppable: function () {
       this.on(this.root, 'dragenter', function (e) { e.preventDefault(); return false });
-      this.on(this.root, 'dragover', function (e) { e.preventDefault(); return false });
     }
   });
+  
   View.register = registry.put
+  
   View.find = registry.get
-  View.dndPos = {
+  
+  View.dnd = {
       value: {},
       update: function (e) {
-        var value = View.dndPos.value;
+        var value = View.dnd.value;
         value.x = e.clientX;
         value.y = e.clientY;
         value.deltaX = e.clientX - value.origX;
         value.deltaY = e.clientY - value.origY;
       },
       init: function (e) {
-        View.dndPos.value = {
+        View.dnd.value = {
             id: (new Date).getTime(),
             origX: e.clientX,
             origY: e.clientY
         };
-        View.dndPos.update(e);
+        View.dnd.update(e);
       }
   };
   
   var TaskView = View.extend({
+    
     init: function (attrs) {
       this._super(attrs.root);
       merge(this, attrs)
     },
+    
     bindEvents: function () {
       this.setDroppable();
-      this.on(this.root, 'drop', function (e, v) {
-        View.dndPos.update(e);
-        this.ctl.dropped(e, View.dndPos.value, v);
-      });
       this.on(this.root, 'dragstart', function (e, v) {
         this.ctl.dragStarted(e, v);
+      });
+      this.on(this.root, 'drop', function (e, v) {
+        View.dnd.update(e);
+        this.ctl.dropped(e, View.dndPos.value, v);
       });
       this.on(this.root, 'click', function (e, v) {
         this.ctl.clicked(e, v);
       });
     },
+    
     startDnD: function (e, effect) {
-      View.dndPos.init(e);
+      View.dnd.init(e);
       e.dataTransfer.effectAllowed = effect;
       return View.dndPos.value
     },
     endDnD: function () {
       
     },
+    
     move: function (position) {
       this.steps.style.setProperty('top', position + 'px');
     }
   });
+  
   TaskView.bind = function (root) {
     return {
       root: root,
