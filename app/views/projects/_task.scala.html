@@ -1,6 +1,10 @@
 @(task: Task)
 
-<article class="task" style="width: @{task.resources.size * 50}px;" data-id="@task.id">
+@import java.text.SimpleDateFormat
+
+<article class="task" style="width: @{task.resources.size * 50}px;" data-id="@task.id" itemscope itemtype="http://schema.org/Event">
+  <meta itemprop="startDate" content="@{new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ssZ").format(new java.util.Date(task.startTime * 1000 + 1328197073125L))}">
+  <meta itemprop="name" content="@task.name">
   <div class="steps" style="top: @{task.startTime / 10}px;" draggable="true">
     @for(step <- task.steps) {
       <div class="step" style="height: @{step.duration / 10}px; width: 100%;">
