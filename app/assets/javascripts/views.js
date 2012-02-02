@@ -78,8 +78,7 @@
     },
     
     renderConflicts: function (conflicts) {
-      this.conflicts.innerHTML = '';
-      
+      this.conflicts.innerHTML = views.projects.conflicts(conflicts).innerHTML;
     }
   });
   

@@ -14,9 +14,9 @@ object json {
   
   val conflictJson = new Writes[Conflict] {
     override def writes(conflict: Conflict): JsValue = JsObject(List(
-        "color" -> JsNumber(conflict.resource.color),
-        "from" -> JsNumber(conflict.from),
-        "to" -> JsNumber(conflict.to)
+        "color" -> JsString("#" + conflict.resource.color.toHexString.substring(2)),
+        "from" -> JsNumber(conflict.from / 10),
+        "duration" -> JsNumber((conflict.to - conflict.from) / 10)
     ))
   }
   
