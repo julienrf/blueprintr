@@ -10,3 +10,6 @@ tmp
 db/
 bin/
 conf/evolutions/
+
+public/javascripts/generated/
+app/views/views.*.scala

@@ -1,5 +1,8 @@
 @(user: String, project: Project)
 
+@import play.api.libs.json.Json
+@import controllers.Projects.conflictJson
+
 @layout(user) {
   <div class="project" data-id="@project.id">
     <div id="left">
@@ -15,11 +18,7 @@
         }
       </div>
       <div id="tasks-grid">
-        <div id="conflicts">
-          @for(conflict <- project.resourcesConflicts) {
-            <div style="top: @{conflict.from / 10}px; height: @{(conflict.to - conflict.from) / 10}px; background-color: #@{conflict.resource.color.toHexString.substring(2)};"></div>
-          }
-        </div>
+        @Html(views.projects.conflicts(Json.toJson(project.resourcesConflicts)))
         <div id="test">
           @for(task <- project.tasks) {
             @_task(task)

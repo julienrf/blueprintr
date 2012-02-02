@@ -78,7 +78,9 @@
     },
     
     renderConflicts: function (conflicts) {
-      this.conflicts.innerHTML = views.projects.conflicts(conflicts).innerHTML;
+      var conflicts = views.projects.conflicts(conflicts);
+      this.conflicts.parentNode.replaceChild(conflicts, this.conflicts);
+      this.conflicts = conflicts;
     }
   });
   
