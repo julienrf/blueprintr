@@ -1,52 +1,35 @@
 @(user: String, project: Project)
 
 @layout(user) {
-  <div id="left">
-    @project.name
-    @for(resource <- project.resources) {
-      <div style="background-color: #@{resource.color.toHexString.substring(2)};">@resource.name</div>
-    }
-  </div>
-  <div id="grid">
-    <div id="tasks-header">
-      @for(task <- project.tasks) {
-        @_taskHeader(task)
+  <div class="project" data-id="@project.id">
+    <div id="left">
+      @project.name
+      @for(resource <- project.resources) {
+        <div style="background-color: #@{resource.color.toHexString.substring(2)};">@resource.name</div>
       }
     </div>
-    <div id="tasks-grid">
-      <div id="conflicts">
-        @for(conflict <- project.resourcesConflicts) {
-          <div style="top: @{conflict.from / 10}px; height: @{(conflict.to - conflict.from) / 10}px; background-color: #@{conflict.resource.color.toHexString.substring(2)};"></div>
+    <div id="grid">
+      <div id="tasks-header">
+        @for(task <- project.tasks) {
+          @_taskHeader(task)
         }
       </div>
-      <div id="test">
-        @for(task <- project.tasks) {
-          @_task(task)
-        }
+      <div id="tasks-grid">
+        <div id="conflicts">
+          @for(conflict <- project.resourcesConflicts) {
+            <div style="top: @{conflict.from / 10}px; height: @{(conflict.to - conflict.from) / 10}px; background-color: #@{conflict.resource.color.toHexString.substring(2)};"></div>
+          }
+        </div>
+        <div id="test">
+          @for(task <- project.tasks) {
+            @_task(task)
+          }
+        </div>
       </div>
     </div>
   </div>
   <script type="text/javascript">
-  
-    var tasks = (function () {
-      var projectData = @{Html(play.api.libs.json.Json.toJson(project)(json.projectJson).toString)};
-      var tasks = projectData.tasks.map(function (taskData) {
-        return new controls.TaskCtl({ attrs: taskData })
-      });
-      return tasks;
-    })();
-  
-  
-    document.findAll('.task').forEach(function (taskElt) {
-      var viewElts = views.TaskView.bind(taskElt);
-      var ctl = arrayFind(tasks, function (t) { return t.model.id === parseInt(viewElts.root.dataset.id, 10) });
-      if (ctl) {
-        var view = new views.TaskView(merge(viewElts, {
-          ctl: ctl
-        }));
-        ctl.view = view;
-        view.bindEvents();
-      }
-    });
+    init.Project(@Html(play.api.libs.json.Json.toJson(project)(json.projectJson).toString));
+    views.bindAll(document.find('.project'));
   </script>
 }

@@ -4,8 +4,9 @@ import play.api._
 import play.api.mvc._
 import play.api.data.Form
 import play.api.data.Forms._
-import models.{Project, Resource, Task}
+import models.{Project, Resource, Task, json}
 import collection.mutable
+import play.api.libs.json.Json
 
 object Projects extends Controller with Authenticated {
   
@@ -36,4 +37,12 @@ object Projects extends Controller with Authenticated {
   }
   
   val projectForm = Form(mapping("name" -> nonEmptyText)(identity)(Some(_)))
+  
+  def resourcesConflicts(id: Int) = authenticated { user => request =>
+    implicit val conflictJson = json.conflictJson
+    Project.find(id) match {
+      case Some(project) => Ok(Json.toJson(project.resourcesConflicts))
+      case None => BadRequest
+    }
+  }
 }

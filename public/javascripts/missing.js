@@ -31,7 +31,7 @@
           } else {
             return xhr.responseText;
           }
-        }
+        };
         
         var xhr = new XMLHttpRequest();
         xhr.open(settings.method || 'GET', settings.url, true);
@@ -54,6 +54,15 @@
         }
         xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
         xhr.send(data);
+      },
+      
+      getJSON: function (url, callback) {
+        ajax.call({
+          url: url,
+          method: 'GET',
+          type: 'json',
+          success: callback
+        })
       }
   };
   

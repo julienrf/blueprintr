@@ -9,7 +9,8 @@ object JavaScript extends Controller with Authenticated {
     import _root_.controllers.routes.javascript._
     Ok(
         Routes.javascriptRouter("routes")(
-            Tasks.move
+            Tasks.move,
+            Projects.resourcesConflicts
             )
         ).as("text/javascript")
   }

@@ -1,9 +1,52 @@
 ;(function () {
   
-  var TaskCtl = Class.extend({
+  var Control = Class.extend({
+    init: function (id) {
+      this.id = id
+    }
+  });
+  merge(Control, {
+      create: function (Kind) {
+        var F = function (args) {
+          return Kind.apply(this, args)
+        };
+        F.prototype = Kind.prototype;
+        Kind._instances || (Kind._instances = {});
+        return function () {
+          var instance = new F(arguments);
+          Kind._instances[instance.id] = instance;
+          return instance
+        }
+      },
+      find: function (Kind) {
+        return function (id) {
+          return Kind._instances[id]
+        }
+      }
+  });
+  
+  
+  
+  var ProjectCtl = Control.extend({
     
-    init: function (settings) {
-      this.model = new models.Task(settings.attrs)
+    init: function (attrs) {
+      this._super(attrs.id);
+      this.model = new models.Project(attrs);
+    },
+    
+    updateConflicts: function () {
+      ajax.getJSON(routes.controllers.Projects.resourcesConflicts(this.id).url, (function (conflicts) {
+        this.view.renderConflicts(conflicts)
+      }).bind(this));
+    }
+  });
+  
+  
+  var TaskCtl = Control.extend({
+    
+    init: function (attrs) {
+      this._super(attrs.id);
+      this.model = new models.Task(attrs)
     },
     
     move: function (position) {
@@ -20,6 +63,7 @@
           if (updated.startTime !== this.model.startTime) {
             process(position);
           }
+          this.project.updateConflicts();
         }).bind(this)
       });
       process(position);
@@ -40,7 +84,9 @@
     }
   });
   
-  window.controls = {
+  window.ctl = {
+    Control: Control,
+    ProjectCtl: ProjectCtl,
     TaskCtl: TaskCtl
   }
 })();

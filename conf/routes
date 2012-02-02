@@ -6,7 +6,7 @@ GET     /                           controllers.Projects.index
 POST    /project                    controllers.Projects.createProject
 GET     /project/new                controllers.Projects.createProjectForm
 GET     /project/:id                controllers.Projects.project(id: Int)
-
+GET     /project/:id/conflicts      controllers.Projects.resourcesConflicts(id: Int)
 
 PUT     /task/:id/move/:startTime   controllers.Tasks.move(id: Int, startTime: Int)
 

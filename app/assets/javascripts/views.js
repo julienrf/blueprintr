@@ -29,6 +29,10 @@
       View.register(root, this);
     },
     
+    bindEvents: function () {
+      
+    },
+    
     on: function (elt, event, handler) {
       elt.addEventListener(event, (function (e) {
         return !(handler.bind(this)(e, View.find(event.target)));
@@ -63,6 +67,29 @@
         View.dnd.update(e);
       }
   };
+  
+  
+  
+  var ProjectView = View.extend({
+    
+    init: function (attrs) {
+      this._super(attrs.root);
+      merge(this, attrs);
+    },
+    
+    renderConflicts: function (conflicts) {
+      this.conflicts.innerHTML = '';
+      
+    }
+  });
+  
+  ProjectView.bind = function (root) {
+    return {
+      root: root,
+      conflicts: root.find('#conflicts')
+    }
+  };
+  
   
   var TaskView = View.extend({
     
@@ -104,7 +131,28 @@
     }
   };
   
+  
+  var bindAll = function (root) {
+    var findProject = ctl.Control.find(ctl.ProjectCtl),
+        findTask = ctl.Control.find(ctl.TaskCtl);
+    var project = findProject(root.dataset.id);
+    project.view = new ProjectView(merge(ProjectView.bind(root), {
+      ctl: project
+    }));
+    root.findAll('.task').forEach(function (root) {
+      var task = findTask(root.dataset.id);
+      task.view = new TaskView(merge(TaskView.bind(root), {
+        ctl: task
+      }));
+      task.view.bindEvents();
+    })
+    project.view.bindEvents();
+  };
+  
+  
   window.views = {
+      bindAll: bindAll,
+      ProjectView: ProjectView,
       TaskView: TaskView
   }
 })();

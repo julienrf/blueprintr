@@ -8,7 +8,7 @@ case class Conflict(resource: Resource, from: Int, to: Int)
 case class Project private (id: Int, var name: String, tasks: mutable.Seq[Task], resources: mutable.Seq[Resource]) {
   
   def resourcesConflicts = {
-    for {
+    (for {
       (task, i) <- tasks.take(tasks.size - 1).zipWithIndex
       (step, startTime) <- task.stepsWithStartTime
       otherTask <- tasks.drop(i + 1)
@@ -22,7 +22,7 @@ case class Project private (id: Int, var name: String, tasks: mutable.Seq[Task],
         math.max(startTime, otherStartTime),
         math.min(startTime + step.duration, otherStartTime + otherStep.duration)
       )
-    }
+    }).toList
   }
 }
 
