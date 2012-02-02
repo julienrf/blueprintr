@@ -6,7 +6,7 @@ import play.api.data.Form
 import play.api.data.Forms._
 import models.{Project, Resource, Task, json}
 import collection.mutable
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, JsValue}
 
 object Projects extends Controller with Authenticated {
   
@@ -35,6 +35,8 @@ object Projects extends Controller with Authenticated {
           }
         )
   }
+  
+  def updates(id: Int) = WebSocket.async[JsValue](ProjectCollaboration.join(id))
   
   val projectForm = Form(mapping("name" -> nonEmptyText)(identity)(Some(_)))
   

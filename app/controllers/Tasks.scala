@@ -15,8 +15,8 @@ object Tasks extends Controller with Authenticated with Transaction {
       case Some(task) => {
         atomic {
           task.move(startTime)
+          Ok(Json.toJson(task))
         }
-        Ok(Json.toJson(task))
       }
       case None => BadRequest
     }

@@ -50,10 +50,6 @@
     },
     
     move: function (position) {
-      var process = (function (position) {
-        this.model.move(position);
-        this.view.move(Math.floor(this.model.startTime) / 10);
-      }).bind(this);
       var action = routes.controllers.Tasks.move(this.model.id, position)
       ajax.call({
         url: action.url,
@@ -61,13 +57,18 @@
         type: 'json',
         success: (function (updated) {
           if (updated.startTime !== this.model.startTime) {
-            process(position);
+            this.updatePosition(updated);
           }
           this.project.updateConflicts();
         }).bind(this)
       });
-      process(position);
+      this.updatePosition(position);
     },
+    
+    updatePosition: function (position) {
+      this.model.move(position);
+      this.view.move(Math.floor(this.model.startTime) / 10);
+    }
     
     dragStarted: function (e, dnd, v) {
       this.dndId = this.view.startDnD(e, 'move').id;
