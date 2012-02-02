@@ -102,7 +102,6 @@
       this.setDroppable();
       this.on(this.root, 'dragstart', function (e, v) {
         this.ctl.dragStarted(e, v);
-        return false
       });
       this.on(this.root, 'drop', function (e, v) {
         View.dnd.update(e);
@@ -116,6 +115,7 @@
     startDnD: function (e, effect) {
       View.dnd.init(e);
       e.dataTransfer.effectAllowed = effect;
+      e.dataTransfer.setData('text', View.dnd.value.id);
       return View.dnd.value
     },
     
