@@ -68,7 +68,7 @@
     updatePosition: function (position) {
       this.model.move(position);
       this.view.move(Math.floor(this.model.startTime) / 10);
-    }
+    },
     
     dragStarted: function (e, dnd, v) {
       this.dndId = this.view.startDnD(e, 'move').id;

@@ -16,29 +16,48 @@ import play.api.mvc.RequestHeader
 
 class ProjectCollaboration extends Actor {
   
-  var members = Map.empty[String, PushEnumerator[JsValue]]
+  private var members = Map.empty[String, PushEnumerator[JsValue]]
   
   def receive = {
-    case Join(user) => sender ! Connected(null)
+    case Enter(user) => {
+      val channel = new PushEnumerator[JsValue]
+      members = members + (user -> channel)
+      sender ! Connected(channel)
+    }
+    case Update(user, update: JsValue) => {
+      for ((_, channel) <- members/*.filterKeys(_ != user)*/) {
+        channel push update
+      }
+    }
+    case Leave(user) => members = members - user
   }
-  
 }
 
-case class Join(user: String)
+case class Enter(user: String)
 case class Connected(channel: Enumerator[JsValue])
+case class Update(user: String, update: JsValue)
+case class Leave(user: String)
 
 object ProjectCollaboration extends Authenticated {
+  
+  private var rooms = Map.empty[Project, ActorRef]
   
   def join(id: Int)(req: RequestHeader): Promise[(Iteratee[JsValue, _], Enumerator[JsValue])] = {
     (for {
       user <- findUser(req)
       project <- Project.find(id)
     } yield {
-      val room = Akka.system.actorOf(Props[ProjectCollaboration])
-      (room ? (Join(user), 1 second)).asPromise map {
+      val room = rooms.get(project) getOrElse {
+        val room = Akka.system.actorOf(Props[ProjectCollaboration])
+        rooms = rooms + (project -> room)
+        room
+      }
+      (room ? (Enter(user), 1 second)).asPromise map {
         case Connected(channel) => {
           val iteratee = Iteratee.foreach[JsValue] { event =>
-            
+            room ! Update(user, event)
+          }.mapDone { _ =>
+            room ! Leave(user)
           }
           (iteratee, channel)
         }
