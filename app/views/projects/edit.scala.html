@@ -1,6 +1,6 @@
 @(user: String, form: Form[String])
 
-@layout(user) {
+@layout(user, List((routes.Projects.createProjectForm.url, "New Project"))) {
 
   @helper.form(controllers.routes.Projects.createProject) {
     @helper.inputText(form("name"))

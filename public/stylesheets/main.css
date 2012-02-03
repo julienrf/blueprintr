@@ -1,4 +1,4 @@
-html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {margin: 0; padding: 0; border: 0; outline: 0; font-weight: inherit; font-style: inherit; font-size: 100%; font-family: inherit;}
+/*html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {margin: 0; padding: 0; border: 0; outline: 0; font-weight: inherit; font-style: inherit; font-size: 100%; font-family: inherit;}*/
 
 table {border-collapse: collapse; border-spacing: 0;}
 caption, th, td {text-align: left; font-weight: normal;}
@@ -20,7 +20,7 @@ body {
     color: #222;
 }
 
-#left {
+.project > .left {
     position: fixed;
     top: 0;
     left: 0;
@@ -29,7 +29,7 @@ body {
     background: #fff;
     border-right: 1px solid #ccc;
 }
-#grid {
+.project > .grid {
     position: absolute;
     top: 0;
     right: 0;
@@ -38,25 +38,25 @@ body {
     overflow: hidden;
     overflow-x: auto;
 }
-#test {
+.project .tasks-grid > .test {
     background: url(/assets/images/grid.png);
     height: 100%;
     width: 100%;
     margin-left: 1em; /* Space for conflicts zone */
 }
-#test:after {
+.project .tasks-grid > .test:after {
     content: " ";
     display: block;
 }
 
-#tasks-header {
+.project > .grid > .tasks-header {
     background: #ccc;
     height: 3em;
     border-bottom: 1px solid #aaa;
     margin-left: 1em; /* Space for conflicts zone */
 }
 
-#tasks-header > header {
+.project > .grid > .tasks-header > header {
     height: 100%;
     line-height: 100%;
     display: inline-block;
@@ -68,51 +68,51 @@ body {
     overflow: hidden;
 }
 
-#tasks-grid {
+.project > .grid > .tasks-grid {
     height: 100%;
     overflow-y: auto;
 }
 
-#tasks-grid .task {
+.project > .grid > .tasks-grid .task {
     display: inline-block;
     height: 100%;
     position: relative;
     border-left: 1px solid #ddd;
 }
 
-#tasks-grid .steps {
+.project > .grid > .tasks-grid .steps {
     position: absolute;
     overflow: hidden;
     border: 1px solid #ddd;
     width: 100%;
 }
 
-#tasks-grid .steps:hover {
+.project > .grid > .tasks-grid .steps:hover {
     background: rgba(0,0,0,.05);
 }
 
-#tasks-grid .step {
+.project > .grid > .tasks-grid .step {
     position: relative;
     border: 1px solid black;
     box-sizing: border-box;
 }
 
-#tasks-grid .resource {
+.project > .grid > .tasks-grid .resource {
     position: absolute;
     width: 50px;
     box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.3);
     border-radius: 3px;
 }
-#tasks-grid .resource:hover {
+.project > .grid > .tasks-grid .resource:hover {
     box-shadow: 3px 3px 0 #f44;
 }
 
-#conflicts {
+.project > .grid > .tasks-grid > .conflicts {
     position: relative;
     width: 1em;
 }
 
-#conflicts > div {
+.project > .grid > .tasks-grid > .conflicts > div {
     position: absolute;
     width: 100%;
 }

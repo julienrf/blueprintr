@@ -1,4 +1,4 @@
 {conflicts}
-div id=conflicts
+div class=conflicts
   {for conflict <- conflicts}
     div style="top: {conflict.from}px; height: {conflict.duration}px; background-color: {conflict.color};"

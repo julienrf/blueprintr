@@ -1,4 +1,4 @@
-@(user: String)(content: Html)
+@(user: String, breadcrumbs: List[(String, String)])(content: Html)
 
 @moreHead = {
   <script type="text/javascript" src="@routes.JavaScript.routes"></script>
@@ -13,7 +13,13 @@
 }
 
 @main("blueprin.tr", moreHead) {
-  @user
-  <a href="@routes.Projects.index" id="logo">Blueprintr</a>
+  <header>
+    <h1>Blueprin.tr</h1>
+    @user
+    <nav>
+      <a href="@routes.Projects.index">Blueprintr</a> @for((url, label) <- breadcrumbs) { » <a href="@url">@label</a> }
+    </nav>
+  </header>
   @content
+  <footer>A Play! Experiment</footer>
 }

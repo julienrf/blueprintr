@@ -87,7 +87,7 @@
   ProjectView.bind = function (root) {
     return {
       root: root,
-      conflicts: root.find('#conflicts')
+      conflicts: root.find('.conflicts')
     }
   };
   

@@ -3,23 +3,23 @@
 @import play.api.libs.json.Json
 @import controllers.Projects.conflictJson
 
-@layout(user) {
+@layout(user, List((routes.Projects.project(project.id).url, project.name))) {
   <div class="project" data-id="@project.id">
-    <div id="left">
-      @project.name
+    <div class="left">
+      <h2>@project.name</h2>
       @for(resource <- project.resources) {
         <div style="background-color: #@{resource.color.toHexString.substring(2)};">@resource.name</div>
       }
     </div>
-    <div id="grid">
-      <div id="tasks-header">
+    <div class="grid">
+      <div class="tasks-header">
         @for(task <- project.tasks) {
           @_taskHeader(task)
         }
       </div>
-      <div id="tasks-grid">
+      <div class="tasks-grid">
         @Html(views.projects.conflicts(Json.toJson(project.resourcesConflicts)))
-        <div id="test">
+        <div class="test">
           @for(task <- project.tasks) {
             @_task(task)
           }
