@@ -1,0 +1,10 @@
+{task}
+article class=task style="width: {task.cssWidth}px;" data-id={task.id} itemscope itemtype="http://schema.org/Event"
+  meta itemprop=startDate content={task.startTime}
+  meta itemprop=name content={task.name}
+  div class=steps style="top: {task.cssTop}px;" draggable=true
+    {for step <- task.steps}
+      div class=step style="height: {step.cssHeight}px; width: 100%;"
+        {for resource <- step.resources}
+          div class=resource style="left: {resource.cssLeft}px; background-color: #{resource.color}; height: {step.cssHeight}px;"
+        div class=handle

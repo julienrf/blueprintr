@@ -10,4 +10,14 @@
   
   <a href="@controllers.routes.Projects.createProjectForm">New project</a>
 
+  <script type="text/javascript">
+    document.findAll('li > a').forEach(function (projectLink) {
+      projectLink.onclick = function (e) {
+        e.preventDefault();
+        //app.navigate(this.href);
+        return false
+      }
+    })
+  </script>
+
 }

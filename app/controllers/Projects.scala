@@ -42,10 +42,8 @@ object Projects extends Controller with Authentication {
   
   def resourcesConflicts(id: Int) = authenticated { user => request =>
     Project.find(id) match {
-      case Some(project) => Ok(Json.toJson(project.resourcesConflicts))
+      case Some(project) => Ok(Json.toJson(project.resourcesConflicts map json.conflictView))
       case None => BadRequest
     }
   }
-  
-  implicit val conflictJson = json.conflictJson // TODO move in resourcesConflicts scope
 }

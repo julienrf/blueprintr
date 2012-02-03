@@ -1,0 +1,3 @@
+{resource}
+div style="background-color: #{resource.color};" data-id="{resource.id}"
+  | {resource.name}

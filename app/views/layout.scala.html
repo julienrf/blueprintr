@@ -20,6 +20,8 @@
       <a href="@routes.Projects.index">Blueprintr</a> @for((url, label) <- breadcrumbs) { » <a href="@url">@label</a> }
     </nav>
   </header>
-  @content
+  <article>
+    @content
+  </article>
   <footer>A Play! Experiment</footer>
 }

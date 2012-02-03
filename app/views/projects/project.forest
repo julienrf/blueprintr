@@ -1,0 +1,19 @@
+{project}
+div class=project data-id={project.id}
+
+  div class=left
+    h2
+      | {project.name}
+    {for resource <- project.resources}
+      {call views.projects.resource(resource)}
+
+  div class=grid
+    div class=tasks-header
+      {for task <- project.tasks}
+        header style="width: {task.cssWidth}px;"
+          | {task.name}
+    div class=tasks-grid
+      {call views.projects.conflicts(project.conflicts)}
+      div class=test
+        {for task <- project.tasks}
+          {call views.projects.task(task)}

@@ -1,32 +1,9 @@
 @(user: String, project: Project)
 
-@import play.api.libs.json.Json
-@import controllers.Projects.conflictJson
-
 @layout(user, List((routes.Projects.project(project.id).url, project.name))) {
-  <div class="project" data-id="@project.id">
-    <div class="left">
-      <h2>@project.name</h2>
-      @for(resource <- project.resources) {
-        <div style="background-color: #@{resource.color.toHexString.substring(2)};">@resource.name</div>
-      }
-    </div>
-    <div class="grid">
-      <div class="tasks-header">
-        @for(task <- project.tasks) {
-          @_taskHeader(task)
-        }
-      </div>
-      <div class="tasks-grid">
-        @Html(views.projects.conflicts(Json.toJson(project.resourcesConflicts)))
-        <div class="test">
-          @for(task <- project.tasks) {
-            @_task(task)
-          }
-        </div>
-      </div>
-    </div>
-  </div>
+
+  @Html(views.projects.project(models.json.projectView(project)))
+
   <script type="text/javascript">
     // Create the client side application model
     init.Project(@Html(play.api.libs.json.Json.toJson(project)(json.projectJson).toString));
