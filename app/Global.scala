@@ -11,9 +11,9 @@ object Global extends GlobalSettings {
         import play.libs.Time
         import collection.mutable
         
-        val mda = Resource("Maxime", 1, Color.blue.getRGB)
-        val jrf = Resource("Julien", 1, Color.red.getRGB)
-        val poele = Resource("Poêle", 1, Color.yellow.getRGB)
+        val mda = Resource("Maxime", 1, new Color(0xE7, 0xBD, 0x76).getRGB)
+        val jrf = Resource("Julien", 1, new Color(0x72, 0x67, 0xB4).getRGB)
+        val poele = Resource("Poêle", 1, new Color(0x58, 0xAC, 0x99).getRGB)
         
         val crepes = Task("Faire des crêpes", Time.parseDuration("30min"), mutable.Seq(
             Step("Pâte", Time.parseDuration("20min"), mutable.Seq(mda)),
