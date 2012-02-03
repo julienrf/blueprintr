@@ -11,7 +11,8 @@ object JavaScript extends Controller with Authentication {
         Routes.javascriptRouter("routes")(
             Tasks.move,
             Projects.resourcesConflicts,
-            Projects.updates
+            Projects.updates,
+            Projects.projectJson
             )
         ).as("text/javascript")
   }

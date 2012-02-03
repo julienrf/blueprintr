@@ -48,6 +48,22 @@
         var task = Control.find(TaskCtl)(update.id);
         task.updatePosition(update.startTime);
       }).bind(this);
+    },
+    
+    dataView: function () {
+      return {
+        id: this.model.id,
+        name: this.model.name,
+        resources: this.model.resources.map(function (resource) {
+          return {
+            id: resource.id,
+            name: resource.name,
+            color: resource.color
+          }
+        }),
+        tasks: this.model.tasks.map(function (task) { return task.dataView() }),
+        conflicts: this.model.conflicts
+      }
     }
   });
   
@@ -89,6 +105,30 @@
     },
     
     clicked: function (e, v) {
+    },
+    
+    dataView: function () {
+      var _this = this;
+      return {
+        id: this.model.id,
+        name: this.model.name,
+        cssWidth: this.model.resources.length * 50,
+        cssTop: this.model.startTime / 10,
+        startTime: (new Date(this.model.startTime * 1000)).toString(),
+        steps: this.model.steps.map(function (step) {
+          return {
+            id: step.id,
+            name: step.name,
+            cssHeight: step.duration / 10,
+            resources: step.resources.map(function (resource) {
+              return {
+                cssLeft: _this.model.resources.indexOf(arrayFind(_this.model.resources, function (r) { return r.id === resource.id })),
+                color: resource.color
+              }
+            })
+          }
+        })
+      }
     }
   });
   

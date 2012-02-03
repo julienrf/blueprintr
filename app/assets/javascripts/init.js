@@ -6,7 +6,8 @@
       id: data.id,
       name: data.name,
       tasks: tasks,
-      resources: []
+      resources: data.resources,
+      conflicts: data.conflicts
     });
     tasks.forEach(function (task) {
       task.project = project
@@ -19,7 +20,8 @@
       id: data.id,
       name: data.name,
       startTime: data.startTime,
-      steps: []
+      resources: data.resources,
+      steps: data.steps
     })
   };
   

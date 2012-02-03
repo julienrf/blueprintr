@@ -14,7 +14,7 @@
     document.findAll('li > a').forEach(function (projectLink) {
       projectLink.onclick = function (e) {
         e.preventDefault();
-        //app.navigate(this.href);
+        navigate(this.href);
         return false
       }
     })

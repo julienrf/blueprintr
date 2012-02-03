@@ -10,7 +10,9 @@ object json {
     override def writes(project: Project): JsValue = JsObject(List(
       "id" -> JsNumber(project.id),
       "name" -> JsString(project.name),
-      "tasks" -> JsArray((project.tasks map taskJson.writes).toList)
+      "tasks" -> JsArray((project.tasks map taskJson.writes).toList),
+      "resources" -> JsArray((project.resources map resourceJson.writes).toList),
+      "conflicts" -> JsArray((project.resourcesConflicts map conflictView))
     ))
   }
   
@@ -19,7 +21,7 @@ object json {
       "id" -> JsNumber(resource.id),
       "name" -> JsString(resource.name),
       "size" -> JsNumber(resource.amount),
-      "color" -> JsNumber(resource.color)
+      "color" -> JsString(resource.color.toHexString.substring(2))
     ))
   }
   
@@ -27,7 +29,9 @@ object json {
     override def writes(task: Task): JsValue = JsObject(List(
       "id" -> JsNumber(task.id),
       "name" -> JsString(task.name),
-      "startTime" -> JsNumber(task.startTime)
+      "startTime" -> JsNumber(task.startTime),
+      "resources" -> JsArray((task.resources map resourceJson.writes).toList),
+      "steps" -> JsArray((task.steps map stepJson.writes).toList)
     ))
   }
   
@@ -35,8 +39,8 @@ object json {
     override def writes(step: Step): JsValue = JsObject(List(
       "id" -> JsNumber(step.id),
       "name" -> JsString(step.name),
-      "duration" -> JsNumber(step.duration)
-      // FIXME resources?
+      "duration" -> JsNumber(step.duration),
+      "resources" -> JsArray((step.resources map resourceJson.writes).toList)
     ))
   }
   

@@ -22,6 +22,13 @@ object Projects extends Controller with Authentication {
     }
   }
   
+  def projectJson(id: Int) = authenticated { user => request =>
+    Project.find(id) match {
+      case Some(project) => Ok(Json.toJson(project)(json.projectJson))
+      case None => NotFound
+    }
+  }
+  
   def createProjectForm = authenticated { user => request =>
     Ok(views.html.projects.edit(user, projectForm))
   }

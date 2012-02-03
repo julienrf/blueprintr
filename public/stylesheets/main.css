@@ -121,3 +121,10 @@ body {
     position: absolute;
     width: 100%;
 }
+
+.spinner {
+  background: url(/assets/images/spinner.gif);
+  width: 60px;
+  height: 60px;
+  margin: auto;
+}

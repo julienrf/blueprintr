@@ -6,6 +6,7 @@ GET     /                                      controllers.Projects.index
 POST    /project                               controllers.Projects.createProject
 GET     /project/new                           controllers.Projects.createProjectForm
 GET     /project/:id                           controllers.Projects.project(id: Int)
+GET     /project/:id/json                      controllers.Projects.projectJson(id: Int)
 GET     /project/:id/conflicts                 controllers.Projects.resourcesConflicts(id: Int)
 GET     /project/:id/updates                   controllers.Projects.updates(id: Int)
 
