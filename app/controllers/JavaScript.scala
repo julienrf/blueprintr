@@ -4,13 +4,14 @@ import play.api.mvc.{Controller, Results}
 import play.api.Routes
 import Results._
 
-object JavaScript extends Controller with Authenticated {
+object JavaScript extends Controller with Authentication {
   def routes = authenticated { user => request =>
     import _root_.controllers.routes.javascript._
     Ok(
         Routes.javascriptRouter("routes")(
             Tasks.move,
-            Projects.resourcesConflicts
+            Projects.resourcesConflicts,
+            Projects.updates
             )
         ).as("text/javascript")
   }

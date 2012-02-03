@@ -8,7 +8,7 @@ import models.{Project, Resource, Task, json}
 import collection.mutable
 import play.api.libs.json.{Json, JsValue}
 
-object Projects extends Controller with Authenticated {
+object Projects extends Controller with Authentication {
   
   def index = authenticated { user => request =>
     val projects = Project.findAll

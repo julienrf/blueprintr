@@ -28,7 +28,10 @@
     </div>
   </div>
   <script type="text/javascript">
+    // Create the client side application model
     init.Project(@Html(play.api.libs.json.Json.toJson(project)(json.projectJson).toString));
+    
+    // Bind views to their components
     views.bindAll(document.find('.project'));
   </script>
 }

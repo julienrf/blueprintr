@@ -34,7 +34,7 @@
         };
         
         var xhr = new XMLHttpRequest();
-        xhr.open(settings.method || 'GET', settings.url, true);
+        xhr.open(settings.method || (settings.action && settings.action.method) || 'GET', settings.url || (settings.action && settings.action.url), true);
         xhr.onreadystatechange = function () {
           if (xhr.readyState === 4) {
             var status = Math.floor(xhr.status / 100);

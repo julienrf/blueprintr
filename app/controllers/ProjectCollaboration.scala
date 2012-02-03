@@ -25,7 +25,7 @@ class ProjectCollaboration extends Actor {
       sender ! Connected(channel)
     }
     case Update(user, update: JsValue) => {
-      for ((_, channel) <- members/*.filterKeys(_ != user)*/) {
+      for ((_, channel) <- members) {
         channel push update
       }
     }
@@ -38,7 +38,7 @@ case class Connected(channel: Enumerator[JsValue])
 case class Update(user: String, update: JsValue)
 case class Leave(user: String)
 
-object ProjectCollaboration extends Authenticated {
+object ProjectCollaboration extends Authentication {
   
   private var rooms = Map.empty[Project, ActorRef]
   
@@ -49,13 +49,13 @@ object ProjectCollaboration extends Authenticated {
     } yield {
       val room = rooms.get(project) getOrElse {
         val room = Akka.system.actorOf(Props[ProjectCollaboration])
-        rooms = rooms + (project -> room)
+        rooms = rooms + (project -> room) // FIXME may I encounter race conditions?
         room
       }
       (room ? (Enter(user), 1 second)).asPromise map {
         case Connected(channel) => {
           val iteratee = Iteratee.foreach[JsValue] { event =>
-            room ! Update(user, event)
+            // Nothing is done
           }.mapDone { _ =>
             room ! Leave(user)
           }
@@ -69,4 +69,7 @@ object ProjectCollaboration extends Authenticated {
       )
     }
   }
+  
+  def notify(project: Project, msg: Any) =
+    rooms.get(project) map { _ ! msg }
 }

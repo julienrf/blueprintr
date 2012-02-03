@@ -32,12 +32,22 @@
     init: function (attrs) {
       this._super(attrs.id);
       this.model = new models.Project(attrs);
+      this.connect(routes.controllers.Projects.updates(this.id));
     },
     
     updateConflicts: function () {
       ajax.getJSON(routes.controllers.Projects.resourcesConflicts(this.id).url, (function (conflicts) {
         this.view.renderConflicts(conflicts)
       }).bind(this));
+    },
+    
+    connect: function (updatesAction) {
+      var updates = new WebSocket('ws://' + location.hostname + ':9000' + updatesAction.url);
+      updates.onmessage = (function (e) {
+        var update = JSON.parse(e.data);
+        var task = Control.find(TaskCtl)(update.id);
+        task.updatePosition(update.startTime);
+      }).bind(this);
     }
   });
   
@@ -50,24 +60,21 @@
     },
     
     move: function (position) {
-      var action = routes.controllers.Tasks.move(this.model.id, position)
+      var action = 
       ajax.call({
-        url: action.url,
-        method: action.method,
-        type: 'json',
-        success: (function (updated) {
-          if (updated.startTime !== this.model.startTime) {
-            this.updatePosition(updated);
-          }
-          this.project.updateConflicts();
-        }).bind(this)
+        action: routes.controllers.Tasks.move(this.project.id, this.model.id, position),
+        error: function () {
+          // TODO
+        }
       });
-      this.updatePosition(position);
+      this.model.move(position);
+      this.view.move(Math.floor(this.model.startTime) / 10);
     },
     
     updatePosition: function (position) {
       this.model.move(position);
       this.view.move(Math.floor(this.model.startTime) / 10);
+      this.project.updateConflicts();
     },
     
     dragStarted: function (e, dnd, v) {
