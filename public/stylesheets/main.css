@@ -20,11 +20,16 @@ body {
     color: #222;
 }
 
+.project {
+    position: relative;
+    height: 500px; /* Why do I need to fix the height? */
+}
+
 .project > .left {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
-    width: 20em;
+    width: 18em;
     bottom: 0;
     background: #fff;
     border-right: 1px solid #ccc;
@@ -34,7 +39,7 @@ body {
     top: 0;
     right: 0;
     bottom: 0;
-    left: 20em;
+    left: 18em;
     overflow: hidden;
     overflow-x: auto;
 }
