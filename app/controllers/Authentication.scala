@@ -25,7 +25,7 @@ object Authentication extends Controller {
     Ok(views.html.login(authForm))
   }
   
-  def authenticate = Action { implicit request =>
+  def authenticate = Action { implicit request ⇒
     authForm.bindFromRequest.fold(
         errors => BadRequest(views.html.login(errors)),
         username => homeRedirect.withSession(USER_KEY->username)

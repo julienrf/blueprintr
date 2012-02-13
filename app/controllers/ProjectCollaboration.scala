@@ -1,6 +1,7 @@
 package controllers
 
 import akka.actor._
+import akka.util.Timeout
 import akka.util.duration._
 
 import models.Project
@@ -20,7 +21,7 @@ class ProjectCollaboration extends Actor {
   
   def receive = {
     case Enter(user) => {
-      val channel = new PushEnumerator[JsValue]
+      val channel = Enumerator.imperative[JsValue]()
       members = members + (user -> channel)
       sender ! Connected(channel)
     }
@@ -40,6 +41,8 @@ case class Leave(user: String)
 
 object ProjectCollaboration extends Authentication {
   
+  implicit val timeout = Timeout(1 second)
+  
   private var rooms = Map.empty[Project, ActorRef]
   
   def join(id: Int)(req: RequestHeader): Promise[(Iteratee[JsValue, _], Enumerator[JsValue])] = {
@@ -52,7 +55,7 @@ object ProjectCollaboration extends Authentication {
         rooms = rooms + (project -> room) // FIXME may I encounter race conditions?
         room
       }
-      (room ? (Enter(user), 1 second)).asPromise map {
+      (room ? Enter(user)).asPromise map {
         case Connected(channel) => {
           val iteratee = Iteratee.foreach[JsValue] { event =>
             // Nothing is done

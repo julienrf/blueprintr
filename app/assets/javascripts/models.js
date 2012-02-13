@@ -6,8 +6,6 @@
       merge(this, attrs);
     }
     
-    
-    
   });
   
   var Task = Class.extend({
